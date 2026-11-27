@@ -35,8 +35,8 @@
 }
 
 .hero-hud-pad {
-  padding-top: calc(env(safe-area-inset-top, 0px) + 4.25rem);
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 5rem);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 4.1rem);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4.75rem);
 }
 
 .footer-safe-pad {
