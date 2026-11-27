@@ -251,8 +251,8 @@ export default function StackSection() {
 
       const stageW = stageRef.current?.clientWidth || 1200;
       const isCompact = stageW < 640;
-      const cardSpacingAngle = isCompact ? 0.44 : 0.33; // clean non-overlapping arc spacing on Android/iOS & desktop!
-      const arcRadius = isCompact ? Math.max(295, stageW * 0.82) : Math.min(720, stageW * 0.56);
+      const cardSpacingAngle = isCompact ? 0.5 : 0.33; // clean non-overlapping arc spacing on Android/iOS & desktop!
+      const arcRadius = isCompact ? Math.max(305, stageW * 0.85) : Math.min(720, stageW * 0.56);
       const filterCat = hoveredCategoryRef.current;
 
       for (let i = 0; i < total; i++) {
@@ -314,15 +314,19 @@ export default function StackSection() {
     p.lastPointerX = e.clientX;
     p.dragMoved = false;
     p.vel = 0;
-    e.currentTarget.setPointerCapture?.(e.pointerId);
+    if (e.pointerType === 'mouse') {
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    }
   };
 
   const handlePointerMove = (e) => {
     const p = physicsRef.current;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const relX = ((e.clientX - rect.left) / rect.width) * 2 - 1; // -1 (left) to +1 (right)
-    p.hoverSteer = Math.max(-1, Math.min(1, relX));
-    p.isHovering = true;
+    if (e.pointerType === 'mouse') {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const relX = ((e.clientX - rect.left) / rect.width) * 2 - 1; // -1 (left) to +1 (right)
+      p.hoverSteer = Math.max(-1, Math.min(1, relX));
+      p.isHovering = true;
+    }
 
     if (!p.isDragging) return;
     const dx = e.clientX - p.lastPointerX;
@@ -332,15 +336,19 @@ export default function StackSection() {
       p.dragMoved = true;
     }
 
-    // 1:1 tactile horizontal drag + momentum velocity capture
-    const step = -dx / 185;
+    // 1:1 tactile horizontal drag + momentum velocity capture (tuned for touch phones & desktop)
+    const dragDivisor = (stageRef.current?.clientWidth || 1200) < 640 ? 135 : 185;
+    const step = -dx / dragDivisor;
     p.pos += step;
     p.vel = step * 0.85;
     p.lastSwipeTs = performance.now();
   };
 
   const handlePointerUp = () => {
-    physicsRef.current.isDragging = false;
+    const p = physicsRef.current;
+    p.isDragging = false;
+    p.isHovering = false;
+    p.hoverSteer = 0;
   };
 
   const handlePointerLeave = () => {
@@ -389,7 +397,7 @@ export default function StackSection() {
             <p className="font-mono-tech text-[11px] tracking-[0.22em] text-white/45 uppercase mb-4">
               (04) STACK
             </p>
-            <h2 className="font-display uppercase text-[clamp(3.1rem,8.4vw,7.4rem)] leading-[0.92] tracking-[0.01em] select-none">
+            <h2 className="font-display uppercase text-[clamp(2.5rem,10.4vw,7.4rem)] leading-[1.02] sm:leading-[0.92] tracking-[0.01em] select-none">
               <span className="text-white">ONE BUILDER, </span>
               <span className="text-outline-white">THREE</span>
               <br />
@@ -397,11 +405,12 @@ export default function StackSection() {
             </h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 self-start md:self-end">
-            <span className="font-mono-tech text-[10px] tracking-[0.18em] uppercase text-white/40">
-              SWIPE TRACKPAD · GLIDE · DRAG
+          <div className="flex items-center justify-between sm:justify-end w-full md:w-auto gap-3 self-start md:self-end">
+            <span className="font-mono-tech text-[9.5px] sm:text-[10px] tracking-[0.15em] sm:tracking-[0.18em] uppercase text-white/45">
+              <span className="sm:hidden">SWIPE · TAP CARD TO FOCUS</span>
+              <span className="hidden sm:inline">SWIPE TRACKPAD · GLIDE · DRAG</span>
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => nudgeStep(-1)}
@@ -431,7 +440,7 @@ export default function StackSection() {
           onPointerCancel={handlePointerUp}
           onPointerLeave={handlePointerLeave}
           style={{ perspective: '1250px', touchAction: 'pan-y' }}
-          className="relative w-full h-[230px] sm:h-[310px] flex items-center justify-center my-3 sm:my-6 select-none cursor-grab active:cursor-grabbing"
+          className="relative -mx-5 sm:mx-0 w-[calc(100%+2.5rem)] sm:w-full h-[215px] sm:h-[310px] flex items-center justify-center my-2 sm:my-6 select-none cursor-grab active:cursor-grabbing overflow-hidden"
         >
           <div
             style={{ transformStyle: 'preserve-3d' }}
@@ -449,7 +458,7 @@ export default function StackSection() {
                   willChange: 'transform, opacity',
                   backfaceVisibility: 'hidden',
                 }}
-                className="absolute w-[138px] sm:w-[186px] h-[164px] sm:h-[212px] rounded-[20px] sm:rounded-[24px] flex flex-col items-center justify-center gap-3 sm:gap-4 border border-white/10 bg-[#0c0e17]/95 backdrop-blur-md shadow-[0_24px_60px_rgba(0,0,0,0.82)] cursor-pointer transition-shadow hover:shadow-[0_26px_70px_rgba(56,189,248,0.16)]"
+                className="absolute w-[130px] sm:w-[186px] h-[158px] sm:h-[212px] rounded-[20px] sm:rounded-[24px] flex flex-col items-center justify-center gap-3 sm:gap-4 border border-white/10 bg-[#0c0e17]/95 backdrop-blur-md shadow-[0_24px_60px_rgba(0,0,0,0.82)] cursor-pointer transition-shadow hover:shadow-[0_26px_70px_rgba(56,189,248,0.16)]"
               >
                 {/* Vivid glowing icon badge mirroring 00:15 */}
                 <div

@@ -43,10 +43,10 @@ function HeroLayerContent({ variant, displayWord }) {
       )}
 
       {/* Giant Edge-to-Edge Condensed Wordmark BEHIND Portrait (00:00–00:03!) */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none px-2 -translate-y-8 sm:-translate-y-6">
+      <div className="absolute inset-0 flex items-start justify-center pt-[31dvh] sm:items-center sm:pt-0 sm:-translate-y-6 pointer-events-none select-none px-2">
         <span
           aria-hidden="true"
-          className={`font-display uppercase whitespace-nowrap leading-[0.82] tracking-[0.015em] text-[24vw] sm:text-[22vw] xl:text-[21vw] ${
+          className={`font-display uppercase whitespace-nowrap leading-[0.82] tracking-[0.015em] text-[19.5vw] sm:text-[22vw] xl:text-[21vw] ${
             isCyber
               ? 'text-outline-cyan opacity-95'
               : 'text-[#ffbe55]/45 drop-shadow-[0_10px_30px_rgba(140,25,0,0.2)]'
@@ -56,7 +56,7 @@ function HeroLayerContent({ variant, displayWord }) {
         </span>
       </div>
 
-      {/* Centerpiece Studio Portrait Cutout (clean phone proportions + desktop editorial height!) */}
+      {/* Centerpiece Studio Portrait Cutout (dead-centered on Android/iOS phones + desktop editorial height!) */}
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-center pointer-events-none select-none">
         <img
           src={isCyber ? heroCyberCutout : heroNormalCutout}
@@ -66,7 +66,7 @@ function HeroLayerContent({ variant, displayWord }) {
               : 'Anand A — Editorial Developer Portrait'
           }
           draggable={false}
-          className="h-[58vh] sm:h-[76vh] md:h-[89vh] max-h-[850px] w-auto object-contain object-bottom translate-x-2 sm:translate-x-0 md:translate-x-4 drop-shadow-[0_24px_50px_rgba(0,0,0,0.42)]"
+          className="h-[60dvh] sm:h-[76vh] md:h-[89vh] max-h-[850px] max-w-[96vw] sm:max-w-none w-auto object-contain object-bottom translate-x-0 md:translate-x-4 drop-shadow-[0_24px_50px_rgba(0,0,0,0.42)]"
         />
       </div>
     </div>
@@ -91,8 +91,9 @@ export default function HeroSection() {
     if (!section) return;
 
     const initialRect = section.getBoundingClientRect();
-    const startX = initialRect.width * 0.56;
-    const startY = initialRect.height * 0.44;
+    const initialIsPhone = initialRect.width < 640;
+    const startX = initialRect.width * (initialIsPhone ? 0.5 : 0.54);
+    const startY = initialRect.height * (initialIsPhone ? 0.53 : 0.42);
 
     const trail = Array.from({ length: TRAIL_COUNT }, () => ({
       x: startX,
@@ -105,21 +106,44 @@ export default function HeroSection() {
       tx: startX,
       ty: startY,
       t: 0,
+      touchResetTimer: null,
     };
 
+    const isInteractiveTarget = (target) =>
+      Boolean(target && typeof target.closest === 'function' && target.closest('button, a'));
+
     const onPointerMove = (e) => {
+      if (isInteractiveTarget(e.target)) return;
       const rect = section.getBoundingClientRect();
       state.hasMoved = true;
       state.tx = e.clientX - rect.left;
       state.ty = e.clientY - rect.top;
+
+      if (e.pointerType === 'touch') {
+        clearTimeout(state.touchResetTimer);
+        state.touchResetTimer = setTimeout(() => {
+          state.hasMoved = false;
+        }, 2200);
+      }
     };
 
     const onPointerLeave = () => {
       state.hasMoved = false;
     };
 
+    const onPointerUpOrCancel = (e) => {
+      if (e.pointerType === 'touch') {
+        clearTimeout(state.touchResetTimer);
+        state.touchResetTimer = setTimeout(() => {
+          state.hasMoved = false;
+        }, 2000);
+      }
+    };
+
     section.addEventListener('pointermove', onPointerMove);
     section.addEventListener('pointerdown', onPointerMove);
+    section.addEventListener('pointerup', onPointerUpOrCancel);
+    section.addEventListener('pointercancel', onPointerUpOrCancel);
     section.addEventListener('pointerleave', onPointerLeave);
 
     let animId;
@@ -128,17 +152,17 @@ export default function HeroSection() {
       const rect = section.getBoundingClientRect();
       const isPhone = rect.width < 640;
       const baseR = isPhone
-        ? Math.max(54, Math.min(78, rect.width * 0.165))
+        ? Math.max(52, Math.min(72, rect.width * 0.16))
         : Math.max(76, Math.min(126, Math.min(rect.width, rect.height) * 0.138));
 
       if (!state.hasMoved) {
-        // Gentle figure-8 sweep across Anand's face/shoulder when idle
+        // Gentle figure-8 sweep across Anand's face/glasses when idle
         state.tx =
-          rect.width * (isPhone ? 0.54 : 0.54) +
-          Math.sin(state.t * 0.72) * (rect.width * (isPhone ? 0.14 : 0.085));
+          rect.width * (isPhone ? 0.5 : 0.54) +
+          Math.sin(state.t * 0.72) * (rect.width * (isPhone ? 0.11 : 0.085));
         state.ty =
-          rect.height * (isPhone ? 0.56 : 0.42) +
-          Math.sin(state.t * 1.44) * (rect.height * 0.048);
+          rect.height * (isPhone ? 0.53 : 0.42) +
+          Math.sin(state.t * 1.44) * (rect.height * (isPhone ? 0.036 : 0.048));
       }
 
       // Head node glides responsively toward cursor
@@ -195,8 +219,11 @@ export default function HeroSection() {
     animId = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(animId);
+      clearTimeout(state.touchResetTimer);
       section.removeEventListener('pointermove', onPointerMove);
       section.removeEventListener('pointerdown', onPointerMove);
+      section.removeEventListener('pointerup', onPointerUpOrCancel);
+      section.removeEventListener('pointercancel', onPointerUpOrCancel);
       section.removeEventListener('pointerleave', onPointerLeave);
     };
   }, []);
@@ -209,7 +236,7 @@ export default function HeroSection() {
     <section
       id="home"
       ref={sectionRef}
-      className="relative w-full h-[100dvh] min-h-[640px] max-h-[1040px] overflow-hidden select-none"
+      className="relative w-full hero-viewport sm:min-h-[640px] max-h-[1040px] overflow-hidden select-none"
     >
       {/* LAYER 1: Base Hero Theme */}
       <HeroLayerContent variant={baseVariant} displayWord={displayWord} />
@@ -220,6 +247,7 @@ export default function HeroSection() {
         style={{
           clipPath: 'url(#hero-portal-clip)',
           WebkitClipPath: 'url(#hero-portal-clip)',
+          transform: 'translateZ(0)',
         }}
       >
         <HeroLayerContent variant={revealVariant} displayWord={displayWord} />
@@ -228,7 +256,7 @@ export default function HeroSection() {
       {/* SVG ClipPath + Unified Exterior-Only Electric Neon Rim Filter */}
       <svg
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full pointer-events-none z-20"
+        className="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-hidden"
       >
         <defs>
           <clipPath id="hero-portal-clip" clipPathUnits="userSpaceOnUse">
@@ -301,13 +329,13 @@ export default function HeroSection() {
       </svg>
 
       {/* Subtle bottom legibility gradient (slightly taller on phone for clean CTA/toggle contrast) */}
-      <div className="absolute inset-x-0 bottom-0 h-56 sm:h-44 bg-gradient-to-t from-black/75 via-black/28 to-transparent pointer-events-none z-20" />
+      <div className="absolute inset-x-0 bottom-0 h-60 sm:h-44 bg-gradient-to-t from-black/80 via-black/32 to-transparent pointer-events-none z-20" />
 
       {/* LAYER 3: Foreground Editorial HUD UI */}
-      <div className="relative z-30 max-w-[1440px] mx-auto w-full h-full px-5 sm:px-10 pt-20 sm:pt-24 pb-20 sm:pb-7 flex flex-col justify-between pointer-events-none">
+      <div className="hero-hud-pad relative z-30 max-w-[1440px] mx-auto w-full h-full px-5 sm:px-10 flex flex-col md:justify-between pointer-events-none">
         {/* Top Row: Identity Tag */}
-        <div className="flex items-center justify-between pt-2 sm:pt-6">
-          <div className="inline-flex items-center gap-2 font-mono-tech text-[10px] sm:text-[11px] tracking-[0.2em] sm:tracking-[0.22em] uppercase text-white/90 drop-shadow">
+        <div className="flex items-center justify-center md:justify-between pt-1 sm:pt-6">
+          <div className="inline-flex items-center gap-2 font-mono-tech text-[10px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.22em] uppercase text-white/90 drop-shadow">
             <span
               className="w-2 h-2 rounded-full animate-pulse"
               style={{ backgroundColor: isDeveloper ? '#ffffff' : '#38bdf8' }}
@@ -318,15 +346,15 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Middle Row: Pixel-Matrix Hero Headline (Left) & Stats (Right) */}
-        <div className="grid grid-cols-1 md:grid-cols-12 items-start md:items-end gap-4 md:gap-6 mt-2 md:my-auto">
-          <div className="md:col-span-5 lg:col-span-4 space-y-2.5 sm:space-y-4">
+        {/* Middle Row: Pixel-Matrix Hero Headline (Top-Centered on Phone, Left-Aligned on Desktop) & Stats (Right) */}
+        <div className="grid grid-cols-1 md:grid-cols-12 items-center md:items-end gap-3 md:gap-6 mt-2.5 sm:mt-4 md:my-auto">
+          <div className="md:col-span-5 lg:col-span-4 space-y-2 sm:space-y-4 text-center md:text-left">
             <motion.h1
               key={mode}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="font-pixel text-white text-[2.4rem] sm:text-5xl lg:text-[3.5rem] leading-[1.02] tracking-tight drop-shadow-[0_6px_22px_rgba(0,0,0,0.42)]"
+              className="font-pixel text-white text-[clamp(1.9rem,8.4vw,2.65rem)] sm:text-5xl lg:text-[3.5rem] leading-[1.0] tracking-tight drop-shadow-[0_6px_22px_rgba(0,0,0,0.42)]"
             >
               {isDeveloper ? (
                 <>
@@ -343,7 +371,7 @@ export default function HeroSection() {
               )}
             </motion.h1>
 
-            <p className="font-mono-tech text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.18em] uppercase text-white/85 drop-shadow">
+            <p className="font-mono-tech text-[8.5px] min-[390px]:text-[9.5px] sm:text-[10px] tracking-[0.1em] min-[390px]:tracking-[0.14em] sm:tracking-[0.18em] uppercase text-white/88 drop-shadow">
               LINUX SERVER ADMIN · FULL-STACK DEV · CLOUD &amp; AI
             </p>
           </div>
@@ -366,7 +394,7 @@ export default function HeroSection() {
         </div>
 
         {/* Bottom Row: Bio + CTAs (Left) | Interactive Mode Switcher (Center) */}
-        <div className="grid grid-cols-1 md:grid-cols-12 items-end gap-4 sm:gap-5">
+        <div className="mt-auto md:mt-0 grid grid-cols-1 md:grid-cols-12 items-end gap-3 sm:gap-5">
           {/* Bottom-Left Intro & Primary CTAs */}
           <div className="md:col-span-4 pointer-events-auto order-2 md:order-1">
             <p className="hidden sm:block text-xs text-white/85 leading-relaxed max-w-[280px] mb-4 drop-shadow">
@@ -384,7 +412,7 @@ export default function HeroSection() {
               <a
                 href={ANAND_PROFILE.resumePath}
                 download="Anand_A_Resume.pdf"
-                className="px-4 py-2.5 rounded-full bg-black/45 hover:bg-black/70 border border-white/30 text-white font-mono-tech text-[10px] sm:text-[11px] font-semibold tracking-[0.14em] uppercase backdrop-blur-md inline-flex items-center gap-1.5 transition-all"
+                className="px-4 py-2.5 rounded-full bg-black/50 hover:bg-black/70 border border-white/30 text-white font-mono-tech text-[10px] sm:text-[11px] font-semibold tracking-[0.14em] uppercase backdrop-blur-md inline-flex items-center gap-1.5 transition-all"
               >
                 <Download className="w-3.5 h-3.5" />
                 RESUME
@@ -422,7 +450,7 @@ export default function HeroSection() {
                 SYSADMIN
               </button>
             </div>
-            <p className="font-mono-tech text-[8.5px] sm:text-[9px] tracking-[0.2em] uppercase text-white/70 mt-1.5">
+            <p className="font-mono-tech text-[8.5px] sm:text-[9px] tracking-[0.16em] sm:tracking-[0.2em] uppercase text-white/75 mt-1.5 text-center">
               TAP OR SWIPE TO AUGMENT · SWITCH MODE
             </p>
           </div>

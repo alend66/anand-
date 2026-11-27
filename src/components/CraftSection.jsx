@@ -65,7 +65,7 @@ export default function CraftSection() {
     >
       {/* Sticky full-viewport pinned Craft Stage on desktop; clean stacked showcase on mobile */}
       <div
-        className="lg:sticky lg:top-0 w-full min-h-screen lg:h-screen lg:min-h-[680px] flex flex-col justify-between overflow-hidden px-5 sm:px-10 lg:px-14 pt-20 sm:pt-24 pb-10 lg:pb-8 transition-all duration-700"
+        className="lg:sticky lg:top-0 w-full min-h-screen lg:h-screen lg:min-h-[680px] flex flex-col justify-between overflow-hidden px-5 sm:px-10 lg:px-14 pt-20 sm:pt-24 pb-14 lg:pb-8 transition-all duration-700"
         style={{ background: pillar.bgGradient }}
       >
         {/* Top Section Index & Counter Row */}
@@ -122,18 +122,21 @@ export default function CraftSection() {
                   {pillar.eyebrow}
                 </p>
 
-                <h3 className="font-display text-white uppercase text-5xl sm:text-6xl xl:text-[4.4rem] leading-[0.94] tracking-[0.01em] mb-5">
+                <h3 className="font-display text-white uppercase text-[clamp(2.65rem,11.5vw,4.4rem)] sm:text-6xl xl:text-[4.4rem] leading-[0.96] sm:leading-[0.94] tracking-[0.01em] mb-4 sm:mb-5">
                   {pillar.title}
                 </h3>
 
-                <p className="text-sm sm:text-[15px] text-white/65 leading-relaxed mb-7 max-w-md">
+                <p className="text-sm sm:text-[15px] text-white/65 leading-relaxed mb-6 sm:mb-7 max-w-md">
                   {pillar.description}
                 </p>
 
                 {/* Process Pipeline Row */}
-                <div className="flex flex-wrap items-center gap-2 font-mono-tech text-[10px] sm:text-[11px] tracking-[0.18em] uppercase mb-5">
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1.5 sm:gap-2 font-mono-tech text-[9.5px] sm:text-[11px] tracking-[0.12em] sm:tracking-[0.18em] uppercase mb-5">
                   {pillar.pipeline.map((step, idx) => (
-                    <span key={step} className="inline-flex items-center gap-2">
+                    <span key={step} className="inline-flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
+                      {idx > 0 && (
+                        <span className="text-white/25">—</span>
+                      )}
                       <span
                         style={{
                           color:
@@ -145,9 +148,6 @@ export default function CraftSection() {
                       >
                         {step}
                       </span>
-                      {idx < pillar.pipeline.length - 1 && (
-                        <span className="text-white/25">—</span>
-                      )}
                     </span>
                   ))}
                 </div>

@@ -98,6 +98,7 @@ export function AboutParticleBust() {
     <div
       ref={containerRef}
       onPointerMove={(e) => {
+        if (e.pointerType !== 'mouse') return;
         const rect = e.currentTarget.getBoundingClientRect();
         pointerRef.current = {
           x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
@@ -108,7 +109,7 @@ export function AboutParticleBust() {
       onPointerLeave={() => {
         pointerRef.current = { x: 0, y: 0, active: false };
       }}
-      className="relative w-full max-w-[340px] sm:max-w-[460px] lg:max-w-[540px] aspect-[3/4] mx-auto flex items-center justify-center select-none overflow-hidden"
+      className="relative w-full max-w-[310px] sm:max-w-[460px] lg:max-w-[540px] aspect-[3/4] mx-auto flex items-center justify-center select-none overflow-hidden"
     >
       {/* Soft ambient ice-blue hologram aura */}
       <div
@@ -119,22 +120,22 @@ export function AboutParticleBust() {
         }}
       />
 
-      {/* 3D Tilting Anand Point-Cloud Portrait blended seamlessly into dark obsidian (#050508) */}
+      {/* 3D Tilting Anand Point-Cloud Portrait blended seamlessly into dark obsidian (#050508) across iOS Safari & Android */}
       <div
         ref={tiltRef}
-        className="relative w-full h-full will-change-transform flex items-center justify-center"
-        style={{
-          maskImage:
-            'radial-gradient(ellipse 78% 82% at 50% 45%, #000 58%, rgba(0,0,0,0.75) 76%, transparent 98%)',
-          WebkitMaskImage:
-            'radial-gradient(ellipse 78% 82% at 50% 45%, #000 58%, rgba(0,0,0,0.75) 76%, transparent 98%)',
-        }}
+        className="relative w-full h-full will-change-transform flex items-center justify-center mix-blend-screen"
       >
         <img
           src={anandParticleBust}
           alt="Anand A — 3D Particle Point-Cloud Hologram Portrait"
           draggable={false}
-          className="w-full h-full object-contain mix-blend-screen brightness-[1.06] contrast-[1.08]"
+          style={{
+            maskImage:
+              'radial-gradient(ellipse 48% 48% at 50% 48%, #000 50%, rgba(0,0,0,0.6) 76%, transparent 100%)',
+            WebkitMaskImage:
+              'radial-gradient(ellipse 48% 48% at 50% 48%, #000 50%, rgba(0,0,0,0.6) 76%, transparent 100%)',
+          }}
+          className="w-full h-full object-contain brightness-[1.06] contrast-[1.08]"
         />
       </div>
 
@@ -237,7 +238,7 @@ export function ContactParticleSphere() {
       ctx.arc(cx, cy, scale * 1.25, 0, Math.PI * 2);
       ctx.fill();
 
-      const mobileDim = isMobile ? 0.68 : 1;
+      const mobileDim = isMobile ? 0.62 : 1;
 
       for (let i = 0; i < pts.length; i++) {
         const p = pts[i];

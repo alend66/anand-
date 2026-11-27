@@ -42,7 +42,7 @@ export default function StatementSection() {
   // 00:05 — Progressive word-by-word scroll illumination
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 0.88', 'center 0.36'],
+    offset: ['start 0.92', 'center 0.52'],
   });
 
   useEffect(() => {
@@ -88,14 +88,17 @@ export default function StatementSection() {
       const h = rect.height;
       ctx.clearRect(0, 0, w, h);
 
-      const cx = w * 0.68 + mouseRef.current.x * 26;
-      const cy = h * 0.44 + mouseRef.current.y * 20;
+      const isPhone = w < 640;
+      const scaleFactor = isPhone ? Math.min(w, h) / 560 : 1;
+      const cx = w * (isPhone ? 0.56 : 0.68) + mouseRef.current.x * 26;
+      const cy = h * (isPhone ? 0.42 : 0.44) + mouseRef.current.y * 20;
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.angle += p.speed;
-        const x = cx + Math.cos(p.angle) * p.radius * 1.15;
-        const y = cy + Math.sin(p.angle) * p.radius * (0.72 + p.zTilt * 0.25);
+        const r = p.radius * scaleFactor;
+        const x = cx + Math.cos(p.angle) * r * 1.15;
+        const y = cy + Math.sin(p.angle) * r * (0.72 + p.zTilt * 0.25);
 
         if (x < -10 || x > w + 10 || y < -10 || y > h + 10) continue;
 
@@ -103,13 +106,14 @@ export default function StatementSection() {
         ctx.fillRect(x, y, p.size, p.size);
       }
 
-      const voidGrad = ctx.createRadialGradient(cx, cy, 4, cx, cy, 92);
+      const voidR = isPhone ? 60 : 92;
+      const voidGrad = ctx.createRadialGradient(cx, cy, 4, cx, cy, voidR);
       voidGrad.addColorStop(0, 'rgba(5, 5, 8, 0.96)');
       voidGrad.addColorStop(0.65, 'rgba(5, 5, 8, 0.55)');
       voidGrad.addColorStop(1, 'rgba(5, 5, 8, 0)');
       ctx.fillStyle = voidGrad;
       ctx.beginPath();
-      ctx.arc(cx, cy, 92, 0, Math.PI * 2);
+      ctx.arc(cx, cy, voidR, 0, Math.PI * 2);
       ctx.fill();
 
       animId = requestAnimationFrame(render);
@@ -168,8 +172,8 @@ export default function StatementSection() {
       </div>
 
       {/* Massive Condensed 3-Line Manifesto Headline with Word-by-Word Scroll Illumination */}
-      <div className="relative z-10 max-w-[1380px] mx-auto w-full my-auto py-8 sm:py-10">
-        <h2 className="font-display uppercase text-[clamp(2.4rem,10.5vw,7.2rem)] leading-[0.95] tracking-[0.01em] select-none">
+      <div className="relative z-10 max-w-[1380px] mx-auto w-full my-auto py-7 sm:py-10">
+        <h2 className="font-display uppercase text-[clamp(2.3rem,10.6vw,7.2rem)] leading-[0.98] sm:leading-[0.95] tracking-[0.01em] select-none">
           {MANIFESTO_LINES.map((line, lineIdx) => (
             <span key={lineIdx} className="block">
               {line.map((w) => {

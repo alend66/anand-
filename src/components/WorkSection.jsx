@@ -17,7 +17,7 @@ import craftAiImg from '../assets/craft-ai.jpg';
 
 function SmartCartMockup() {
   return (
-    <div className="relative w-full h-[310px] sm:h-[350px] flex items-center justify-center select-none">
+    <div className="relative w-full py-2 sm:py-0 sm:h-[350px] flex items-center justify-center select-none">
       <div className="absolute w-72 h-72 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none" />
 
       {/* Left tilted phone: Live YOLOv8 Vision Scanner */}
@@ -42,7 +42,7 @@ function SmartCartMockup() {
       </div>
 
       {/* Center flagship phone: Smart Cart Billing Dashboard */}
-      <div className="relative z-10 flex flex-col w-[215px] sm:w-[235px] h-[300px] sm:h-[325px] rounded-[28px] bg-[#10131c] border border-white/18 p-4 shadow-[0_30px_70px_rgba(0,0,0,0.85)]">
+      <div className="relative z-10 flex flex-col w-full max-w-[260px] sm:w-[235px] min-h-[295px] h-auto sm:h-[325px] rounded-[26px] sm:rounded-[28px] bg-[#10131c] border border-white/18 p-4 shadow-[0_30px_70px_rgba(0,0,0,0.85)] overflow-hidden">
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-[9px] font-mono-tech uppercase tracking-widest text-cyan-400">
@@ -163,17 +163,17 @@ function LinuxInfraMockup() {
       </div>
 
       {/* Bottom Governance / Audit Strip */}
-      <div className="relative z-10 rounded-xl bg-white/[0.03] border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between font-mono-tech text-[9px] sm:text-[10px] tracking-[0.12em] sm:tracking-[0.18em] text-white/60">
-        <span className="inline-flex items-center gap-1 text-indigo-300">
-          <Terminal className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> PROVISION
+      <div className="relative z-10 rounded-xl bg-white/[0.03] border border-white/10 px-2.5 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-1 font-mono-tech text-[8.5px] sm:text-[10px] tracking-[0.08em] sm:tracking-[0.18em] text-white/60">
+        <span className="inline-flex items-center gap-1 text-indigo-300 whitespace-nowrap">
+          <Terminal className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" /> PROVISION
         </span>
         <span className="text-white/25">→</span>
-        <span className="inline-flex items-center gap-1 text-cyan-300">
-          <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> HARDEN
+        <span className="inline-flex items-center gap-1 text-cyan-300 whitespace-nowrap">
+          <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" /> HARDEN
         </span>
         <span className="text-white/25">→</span>
-        <span className="inline-flex items-center gap-1 text-emerald-300">
-          <Cpu className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> MONITOR
+        <span className="inline-flex items-center gap-1 text-emerald-300 whitespace-nowrap">
+          <Cpu className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" /> MONITOR
         </span>
       </div>
     </div>
@@ -182,7 +182,7 @@ function LinuxInfraMockup() {
 
 function NeedNShareMockup() {
   return (
-    <div className="relative w-full h-[310px] sm:h-[350px] flex items-center justify-center select-none">
+    <div className="relative w-full py-2 sm:py-0 sm:h-[350px] flex items-center justify-center select-none">
       <div className="absolute w-72 h-72 rounded-full bg-cyan-500/14 blur-3xl pointer-events-none" />
 
       <div className="hidden sm:flex flex-col w-[155px] h-[255px] rounded-[24px] bg-[#0e121a] border border-white/12 p-3.5 -rotate-6 translate-x-6 translate-y-3 shadow-2xl">
@@ -202,7 +202,7 @@ function NeedNShareMockup() {
         </div>
       </div>
 
-      <div className="relative z-10 flex flex-col w-[225px] sm:w-[245px] h-[300px] sm:h-[325px] rounded-[28px] bg-[#10131b] border border-white/18 p-4 shadow-[0_30px_70px_rgba(0,0,0,0.85)]">
+      <div className="relative z-10 flex flex-col w-full max-w-[265px] sm:w-[245px] min-h-[295px] h-auto sm:h-[325px] rounded-[26px] sm:rounded-[28px] bg-[#10131b] border border-white/18 p-4 shadow-[0_30px_70px_rgba(0,0,0,0.85)] overflow-hidden">
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-[9px] font-mono-tech uppercase tracking-widest text-cyan-400">
@@ -271,10 +271,10 @@ function NeedNShareMockup() {
 function EditorialTriptychMockup() {
   return (
     <div className="relative w-full py-2 sm:py-0 sm:h-[360px] flex flex-col items-center justify-center select-none">
-      <div className="relative flex items-center justify-center w-full h-[215px] sm:h-[275px]">
+      <div className="relative flex items-center justify-center w-full h-[196px] sm:h-[275px]">
         <div className="absolute w-64 h-64 rounded-full bg-orange-500/15 blur-3xl pointer-events-none" />
 
-        <div className="w-[100px] sm:w-[152px] h-[145px] sm:h-[212px] rounded-2xl overflow-hidden border border-white/12 -rotate-6 translate-x-5 sm:translate-x-7 shadow-2xl opacity-85">
+        <div className="w-[82px] sm:w-[152px] h-[126px] sm:h-[212px] rounded-2xl overflow-hidden border border-white/12 -rotate-6 translate-x-4 sm:translate-x-7 shadow-2xl opacity-85">
           <img
             src={craftFullstackImg}
             alt="Anand Python & Django Engineering"
@@ -282,20 +282,20 @@ function EditorialTriptychMockup() {
           />
         </div>
 
-        <div className="relative z-10 w-[136px] sm:w-[192px] h-[185px] sm:h-[258px] rounded-2xl overflow-hidden border border-orange-400/35 shadow-[0_28px_70px_rgba(0,0,0,0.9)]">
+        <div className="relative z-10 w-[126px] sm:w-[192px] h-[176px] sm:h-[258px] rounded-2xl overflow-hidden border border-orange-400/35 shadow-[0_28px_70px_rgba(0,0,0,0.9)]">
           <img
             src={craftInfraImg}
             alt="Anand Systems & Security Engineering"
             className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 bg-gradient-to-t from-black/85 via-black/40 to-transparent">
-            <span className="inline-flex items-center gap-1 text-[8.5px] sm:text-[9px] font-mono-tech text-orange-300 uppercase tracking-wider">
-              <Server className="w-3 h-3" /> Django + Face ID
+          <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3 bg-gradient-to-t from-black/90 via-black/45 to-transparent">
+            <span className="inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-mono-tech text-orange-300 uppercase tracking-wider whitespace-nowrap">
+              <Server className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" /> Django + Face ID
             </span>
           </div>
         </div>
 
-        <div className="w-[100px] sm:w-[152px] h-[145px] sm:h-[212px] rounded-2xl overflow-hidden border border-white/12 rotate-6 -translate-x-5 sm:-translate-x-7 shadow-2xl opacity-85">
+        <div className="w-[82px] sm:w-[152px] h-[126px] sm:h-[212px] rounded-2xl overflow-hidden border border-white/12 rotate-6 -translate-x-4 sm:-translate-x-7 shadow-2xl opacity-85">
           <img
             src={craftAiImg}
             alt="Anand Computer Vision"
@@ -372,7 +372,7 @@ function StackingWorkCard({ project, index, total, renderMockup }) {
           style={{ backgroundColor: project.accent }}
         />
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-8">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-7 lg:gap-8">
           {/* Left Content Column */}
           <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
@@ -382,32 +382,32 @@ function StackingWorkCard({ project, index, total, renderMockup }) {
               >
                 {project.number}
               </p>
-              <p className="font-mono-tech text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-white/45 mb-2.5">
+              <p className="font-mono-tech text-[10px] sm:text-[11px] tracking-[0.16em] sm:tracking-[0.2em] uppercase text-white/45 mb-2.5">
                 {project.category}
               </p>
-              <h3 className="font-display text-white uppercase text-4xl sm:text-5xl xl:text-[3.7rem] leading-[0.95] tracking-[0.01em] mb-4">
+              <h3 className="font-display text-white uppercase text-[clamp(2.15rem,9.5vw,3.7rem)] sm:text-5xl xl:text-[3.7rem] leading-[0.96] tracking-[0.01em] mb-4">
                 {project.title}
               </h3>
-              <p className="text-sm sm:text-[15px] text-white/62 leading-relaxed max-w-xl mb-7">
+              <p className="text-sm sm:text-[15px] text-white/62 leading-relaxed max-w-xl mb-6 sm:mb-7">
                 {project.description}
               </p>
             </div>
 
-            <div className="border-t border-white/10 pt-5 space-y-3.5">
-              <div className="grid grid-cols-12 items-baseline gap-2">
-                <span className="col-span-4 sm:col-span-3 font-mono-tech text-[10px] tracking-[0.18em] uppercase text-white/40">
+            <div className="border-t border-white/10 pt-5 space-y-4 sm:space-y-3.5">
+              <div className="flex flex-col sm:grid sm:grid-cols-12 sm:items-baseline gap-1 sm:gap-2">
+                <span className="sm:col-span-3 font-mono-tech text-[10px] tracking-[0.18em] uppercase text-white/40">
                   ROLE
                 </span>
-                <span className="col-span-8 sm:col-span-9 text-xs sm:text-sm font-medium text-white/90">
+                <span className="sm:col-span-9 text-xs sm:text-sm font-medium text-white/90">
                   {project.role}
                 </span>
               </div>
 
-              <div className="grid grid-cols-12 items-start gap-2">
-                <span className="col-span-4 sm:col-span-3 font-mono-tech text-[10px] tracking-[0.18em] uppercase text-white/40 pt-1">
+              <div className="flex flex-col sm:grid sm:grid-cols-12 sm:items-start gap-2">
+                <span className="sm:col-span-3 font-mono-tech text-[10px] tracking-[0.18em] uppercase text-white/40 sm:pt-1">
                   BUILT WITH
                 </span>
-                <div className="col-span-8 sm:col-span-9 flex flex-wrap gap-1.5">
+                <div className="sm:col-span-9 flex flex-wrap gap-1.5">
                   {project.stack.map((tech) => (
                     <span
                       key={tech}
@@ -477,14 +477,14 @@ export default function WorkSection() {
           <p className="font-mono-tech text-[11px] tracking-[0.22em] text-white/45 uppercase mb-4">
             (03) SELECTED WORK
           </p>
-          <h2 className="font-display uppercase text-[clamp(3.2rem,8.5vw,7.5rem)] leading-[0.92] tracking-[0.01em] select-none">
+          <h2 className="font-display uppercase text-[clamp(2.55rem,10.8vw,7.5rem)] leading-[1.02] sm:leading-[0.92] tracking-[0.01em] select-none">
             <span className="text-white">BUILT, SHIPPED, </span>
             <span className="text-outline-white">RUNNING.</span>
           </h2>
         </motion.div>
 
         {/* Sticky Stacking Deck — each card glides up smoothly over the previous one (00:11–00:13!) */}
-        <div className="flex flex-col gap-10 sm:gap-14 pb-10">
+        <div className="flex flex-col gap-7 sm:gap-14 pb-10">
           {WORK_PROJECTS.map((project, idx) => (
             <StackingWorkCard
               key={project.number}

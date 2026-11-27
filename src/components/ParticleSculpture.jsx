@@ -268,7 +268,10 @@ export default function ParticleSculpture({ shapeType, accentHex }) {
 
       const cx = w * 0.5;
       const cy = h * 0.5;
-      const scale = Math.min(w, h) * 0.31;
+      const scale =
+        activeShape === 'pipeline'
+          ? Math.min(w * 0.22, h * 0.3)
+          : Math.min(w * 0.27, h * 0.31);
       const fov = 3.4;
 
       const rCol = Math.round(currentRgb[0]);
